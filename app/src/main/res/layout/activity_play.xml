@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.ahmedso.tictactoe.ui.play.PlayViewModel" />
+
+        <variable
+            name="handlers"
+            type="com.ahmedso.tictactoe.ui.play.PlayHandlers" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/ll_play_player_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_x" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text='@{String.format("%s %s", viewModel.XWinsCount, @string/play_wins_text), default=`0 Wins`}'
+                android:textColor="@color/xColor"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_play_player_o"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text='@{String.format("%s %s", viewModel.OWinsCount, @string/play_wins_text), default=`0 Wins`}'
+                android:textColor="@color/oColor"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_o" />
+        </LinearLayout>
+
+        <com.github.florent37.shapeofview.shapes.RoundRectView
+            android:id="@+id/play_current_player_container"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toTopOf="@id/ll_board"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.75"
+            app:shape_roundRect_borderColor="@android:color/darker_gray"
+            app:shape_roundRect_borderWidth="1dp"
+            app:shape_roundRect_bottomLeftRadius="40dp"
+            app:shape_roundRect_bottomRightRadius="40dp"
+            app:shape_roundRect_topLeftRadius="40dp"
+            app:shape_roundRect_topRightRadius="40dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.github.florent37.shapeofview.shapes.CircleView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@{viewModel.currentTurn == viewModel.XValue ? @color/xColor : @android:color/transparent}"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_x"
+                        android:tint="@{viewModel.currentTurn == viewModel.XValue ? @android:color/white : @color/xColor}" />
+                </com.github.florent37.shapeofview.shapes.CircleView>
+
+                <com.github.florent37.shapeofview.shapes.CircleView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@{viewModel.currentTurn == viewModel.OValue ? @color/oColor : @android:color/transparent}"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_o"
+                        android:tint="@{viewModel.currentTurn == viewModel.OValue ? @android:color/white : @color/oColor}" />
+                </com.github.florent37.shapeofview.shapes.CircleView>
+            </LinearLayout>
+        </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+        <LinearLayout
+            android:id="@+id/ll_board"
+            android:layout_width="310dp"
+            android:layout_height="310dp"
+            android:orientation="vertical"
+            android:padding="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".ui.play.PlayActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(0, 0)}"
+                    android:src="@{viewModel.boardUI[0][0] == 0 ? null : viewModel.boardUI[0][0] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+
+                <View
+                    android:layout_width="@dimen/cell_separator"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(0, 1)}"
+                    android:src="@{viewModel.boardUI[0][1] == 0 ? null : viewModel.boardUI[0][1] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+
+                <View
+                    android:layout_width="@dimen/cell_separator"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(0, 2)}"
+                    android:src="@{viewModel.boardUI[0][2] == 0 ? null : viewModel.boardUI[0][2] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cell_separator"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(1, 0)}"
+                    android:src="@{viewModel.boardUI[1][0] == 0 ? null : viewModel.boardUI[1][0] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+
+                <View
+                    android:layout_width="@dimen/cell_separator"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(1, 1)}"
+                    android:src="@{viewModel.boardUI[1][1] == 0 ? null : viewModel.boardUI[1][1] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+
+                <View
+                    android:layout_width="@dimen/cell_separator"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(1, 2)}"
+                    android:src="@{viewModel.boardUI[1][2] == 0 ? null : viewModel.boardUI[1][2] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cell_separator"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(2, 0)}"
+                    android:src="@{viewModel.boardUI[2][0] == 0 ? null : viewModel.boardUI[2][0] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+
+                <View
+                    android:layout_width="@dimen/cell_separator"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(2, 1)}"
+                    android:src="@{viewModel.boardUI[2][1] == 0 ? null : viewModel.boardUI[2][1] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+
+                <View
+                    android:layout_width="@dimen/cell_separator"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    style="@style/CellStyle"
+                    android:onClick="@{() -> handlers.check(2, 2)}"
+                    android:src="@{viewModel.boardUI[2][2] == 0 ? null : viewModel.boardUI[2][2] == viewModel.xValue ? @drawable/ic_x : @drawable/ic_o}" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_play_win_line_x"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/colorAccent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ll_board"
+            app:layout_constraintTop_toTopOf="@id/ll_board" />
+
+        <View
+            android:id="@+id/v_play_win_line_y"
+            android:layout_width="5dp"
+            android:layout_height="0dp"
+            android:background="@color/colorAccent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ll_board"
+            app:layout_constraintEnd_toEndOf="@id/ll_board"
+            app:layout_constraintStart_toStartOf="@id/ll_board"
+            app:layout_constraintTop_toTopOf="@id/ll_board" />
+
+        <Button
+            android:id="@+id/btn_play_new_game"
+            style="@style/ButtonOk"
+            android:layout_gravity="center"
+            android:onClick="@{()-> handlers.playAgain()}"
+            android:text="@string/play_button_new_game_text"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/rg_difficulty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_board" />
+
+        <RadioGroup
+            android:id="@+id/rg_difficulty"
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="30dp"
+            android:checkedButton="@id/rb_difficulty_easy"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="@{viewModel.multiPlayer ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.95">
+
+            <RadioButton
+                android:id="@+id/rb_difficulty_easy"
+                style="@style/DifficultyLevel"
+                android:text="@string/play_level_easy_text" />
+
+            <RadioButton
+                android:id="@+id/rb_difficulty_medium"
+                style="@style/DifficultyLevel"
+                android:text="@string/play_level_medium_text" />
+
+            <RadioButton
+                android:id="@+id/rb_difficulty_hard"
+                style="@style/DifficultyLevel"
+                android:text="@string/play_level_hard_text" />
+
+            <RadioButton
+                android:id="@+id/rb_difficulty_expert"
+                style="@style/DifficultyLevel"
+                android:text="@string/play_level_expert_text" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

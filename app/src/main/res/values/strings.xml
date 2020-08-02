@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Tic Tac Toe</string>
+    <string name="pick_side_title">Pick your side</string>
+    <string name="start_single_player_button_text">Beat AI</string>
+    <string name="start_multi_player_button_text">Multi Player</string>
+    <string name="play_button_new_game_text">Play again</string>
+    <string name="play_level_easy_text">Easy</string>
+    <string name="play_level_medium_text">Medium</string>
+    <string name="play_level_hard_text">Hard</string>
+    <string name="play_level_expert_text">Expert</string>
+    <string name="play_wins_text">Wins</string>
+</resources>
